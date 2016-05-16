@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.objectFactory" value="spring" />
+    
+    <package name="default" namespace="/" extends="struts-default">
+    	<interceptors>
+    		<interceptor name="loginInterceptor" class="com.yyt.interceptor.LoginInterceptor"/>
+			 <interceptor-stack name="myStack">
+		   		 <interceptor-ref name="defaultStack"/>
+		   		 <interceptor-ref name="loginInterceptor">
+		   		 	<param name="includeMethods">vote,add</param><!-- 过滤要执行的方法 -->
+		   		 </interceptor-ref>
+	  		 </interceptor-stack>
+    	</interceptors>
+	 	<action name="*_*" class="{1}Action" method="{2}">
+	 		<interceptor-ref name="myStack"/>
+	 		<result name="{2}" type="redirect">/back/{2}.jsp</result>
+	 		<result name="login" type="redirect">/back/login.jsp</result>
+	 		<result name="list" type="redirect">/back/list.jsp</result>
+	 		<result name="saveSuccess" type="redirect">/back/saveSuccess.jsp</result>
+	 		<result name="vote" type="redirect">/back/vote.jsp</result>
+	 		<result name="add" type="redirect">/back/add.jsp</result>
+	 		<result name="index" type="redirect">index.jsp</result>
+	 	</action>
+    </package>
+</struts>
